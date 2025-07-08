@@ -1,0 +1,19 @@
+{
+    "name": "group20-backend",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+        "dev": "nodemon server.js",
+        "start": "node server.js"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.10"
+    },
+    "dependencies": {
+        "bcryptjs": "^3.0.2",
+        "dotenv": "^16.5.0",
+        "express": "^5.1.0",
+        "jsonwebtoken": "^9.0.2",
+        "mysql2": "^3.14.1"
+    }
+}
