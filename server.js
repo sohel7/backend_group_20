@@ -13,32 +13,37 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 app.use(express.json());
 
-// ----------------- Register Route -----------------
+// ----------------- Register  Route -----------------
+
 app.post('/register', async (req, res) => {
     const { name, email, phone, address, password, image } = req.body;
 
-    // Check if the user already exists
+    console.log('Received data:', req.body);  // Log the received data for debugging
+
     db.query('SELECT * FROM users WHERE email = ?', [email], async (err, results) => {
         if (err) {
+            console.log('Database error:', err); // Log the error
             return res.status(500).json({ success: false, message: 'Database error' });
         }
 
         if (results.length > 0) {
+            console.log('User already exists');
             return res.status(400).json({ success: false, message: 'User already exists' });
         }
 
-        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Insert new user into the database
         db.query(
             'INSERT INTO users (name, email, phone, address, password, image) VALUES (?, ?, ?, ?, ?, ?)',
             [name, email, phone, address, hashedPassword, image],
             (err) => {
                 if (err) {
+                    console.log('Failed to insert user:', err); // Log the insert failure
                     return res.status(500).json({ success: false, message: 'Failed to register user' });
                 }
-                return res.status(201).json({ success: true, message: 'User registered successfully' });
+                console.log('User registered successfully');
+                // Return a response with success and message
+                res.status(201).json({ success: true, message: 'User registered successfully' });
             }
         );
     });
